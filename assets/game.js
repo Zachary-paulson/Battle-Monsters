@@ -1,3 +1,5 @@
+$(document).ready(function(){
+
 let venusaur = {
     name: "Venusaur",
     level: 50,
@@ -6,7 +8,39 @@ let venusaur = {
     defense: 83,
     speed: 80,
     type: "grass",
-    conditionStatus: "Normal"
+    conditionStatus: "Normal",
+    razorLeaf : {
+        name: "Razor Leaf",
+        pwr: 55,
+        hitChance: 95,
+        stab: true,
+        effect: "none",
+        delay: "none"
+    },
+    sleepPowder : {
+        name: "Sleep Powder",
+        pwr: 0,
+        hitChance: 75,
+        stab: true,
+        effect: "sleep",
+        delay: "none"
+    },
+    SwordsDance : {
+        name: "Swords Dance",
+        pwr: 0,
+        hitChance: 100,
+        stab: true,
+        effect: "attackUp",
+        delay: "none"
+    },
+    bodySlam : {
+        name: "Body Slam",
+        pwr: 85,
+        hitChance: 100,
+        stab: false,
+        effect: "none",
+        delay: "none"
+    }
 }
 
 let blastoise = {
@@ -17,7 +51,39 @@ let blastoise = {
     defense: 100,
     speed: 78,
     type: "water",
-    condition: "Normal"
+    condition: "Normal",
+    surf : {
+        name: "Surf",
+        pwr: 90,
+        hitChance: 100,
+        stab: true,
+        effect: "none",
+        delay: "none"
+    },
+    blizzard : {
+        name: "Sleep Powder",
+        pwr: 0,
+        hitChance: 75,
+        stab: true,
+        effect: "sleep",
+        delay: "none"
+    },
+    bodySlam : {
+        name: "Body Slam",
+        pwr: 85,
+        hitChance: 100,
+        stab: false,
+        effect: "none",
+        delay: "none"
+    },
+    hydroPump : {
+        name: "Hydro Pump",
+        pwr: 110,
+        hitChance: 80,
+        stab: true,
+        effect: "none",
+        delay: "none"
+    }
 }
 
 let charizard = {
@@ -28,7 +94,39 @@ let charizard = {
     defense: 78,
     speed: 100,
     type: "fire",
-    condition: "normal"
+    condition: "normal",
+    fireBlast : {
+        name: "Fire Blast",
+        pwr: 110,
+        hitChance: 85,
+        stab: true,
+        effect: "none",
+        delay: "none"
+    },
+    earthQuake : {
+        name: "Earth Quake",
+        pwr: 100,
+        hitChance: 100,
+        stab: false,
+        effect: "none",
+        delay: "none"
+    },
+    SwordsDance : {
+        name: "Swords Dance",
+        pwr: 0,
+        hitChance: 100,
+        stab: true,
+        effect: "attackUp",
+        delay: "none"
+    },
+    bodySlam : {
+        name: "Body Slam",
+        pwr: 85,
+        hitChance: 100,
+        stab: false,
+        effect: "none",
+        delay: "none"
+    }
 }
 
 let chansey = {
@@ -39,29 +137,52 @@ let chansey = {
     defense: 105,
     speed: 105,
     type: "normal",
-    condition: "normal"
+    condition: "normal",
+    iceBeam : {
+        name: "Ice Beam",
+        pwr: 90,
+        hitChance: 100,
+        stab: false,
+        effect: "freeze",
+        delay: "none"
+    },
+    softBoiled : {
+        name: "Soft Boiled",
+        pwr: 0,
+        hitChance: 100,
+        stab: true,
+        effect: "none",
+        delay: "none"
+    },
+    thunderWave : {
+        name: "Thunder Wave",
+        pwr: 0,
+        hitChance: 90,
+        stab: false,
+        effect: "paralyze",
+        delay: "none"
+    },
+    thunderbolt : {
+        name: "Thunderbolt",
+        pwr: 90,
+        hitChance: 100,
+        stab: false,
+        effect: "none",
+        delay: "none"
+    }
 }
 
-let condition = ["normal", "alseep", "paralyzed", "poisoned ", "burned", "freezed"]
+$(document).on("click","#enemyPic",function(){
+    console.log("click!");
+});
 
-//startGame();
-
-//playerPick();
-
-//gameTurn();
-
-// damage(lvl, atk, def, modifer, pwr);
-
-// getCrit();
-
-// getRndmDmgMod();
-
-// replayGame();
-
-    //console.log(damage(50, 82, 100, 55, true, "water", "fire"));
 
 function startGame() {
-    // create 4 pokemon objects
+    
+}
+
+function selectPokemon(){
+
 }
 
 //tested functioning correctly.
@@ -137,3 +258,16 @@ function type(pkm1, pkm2){
         return 1;
     }//end entire if statment.
 }
+
+//tested functioning correctly.
+function isHit(moveChance){
+    let chance = Math.floor(Math.random() * (99 + 1) + 1);
+    if (moveChance >= chance){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+});
