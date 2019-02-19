@@ -15,43 +15,73 @@
         <h1>header</h1>
     </header>
 
-    <div id="container">
+    <!-- pokemon tooltip -->
+    <div id="sideBar">
+        <a href="https://placeholder.com/" id="tooltipPic"><img src="assets/images/pokemon/200x200/Venusaur.png"
+                alt="pokemon"></a>
+        <p id="tooltipPokedex"> <strong>Venusaur #003</strong><br />
+            The plant blooms when it is absorbing solar energy. It stays on the move to seek sunlight.
+        </p>
+    </div>
+
+    <div id="containerMain">
+        <!-- character window -->
         <div id="starterPokemon">
             <div id="pokemonBox">
-                <a href="https://placeholder.com/"><img src="https://via.placeholder.com/150" alt="pokemon"></a>
-                <h2>Stats</h2>
+                <a href="https://placeholder.com/" id="pokemonRoster"><img
+                        src="assets/images/pokemon/150x150/Venusaur.png" alt="pokemon"></a>
+                <h2 id="pokemonName">Venusaur</h2>
             </div>
             <div id="pokemonBox">
-                <a href="https://placeholder.com/"><img src="https://via.placeholder.com/150" alt="pokemon"></a>
-                <h2>Stats</h2>
+                <a href="https://placeholder.com/" id="pokemonRoster"><img
+                        src="assets/images/pokemon/150x150/Blastoise.png" alt="pokemon"></a>
+                <h2 id="pokemonName">Blastoise</h2>
             </div>
             <div id="pokemonBox">
-                <a href="https://placeholder.com/"><img src="https://via.placeholder.com/150" alt="pokemon"></a>
-                <h2>Stats</h2>
+                <a href="https://placeholder.com/" id="pokemonRoster"><img
+                        src="assets/images/pokemon/150x150/Charizard.png" alt="pokemon"></a>
+                <h2 id="pokemonName">Charizard</h2>
+            </div>
+            <div id="pokemonBox">
+                <a href="https://placeholder.com/" id="pokemonRoster"><img
+                        src="assets/images/pokemon/150x150/chansey.png" alt="pokemon"></a>
+                <h2 id="pokemonName">chansey</h2>
             </div>
         </div>
-        <div id="battleArea">
-            <div id="enemyStage">
-                    <a href="https://placeholder.com/"><img src="https://via.placeholder.com/200" alt="pokemon"></a>
-                    <h2>enemy HP</h2>
+
+        <!-- battle stage -->
+        <div id="mainGame">
+            <div id="battleArea">
+                <div id="enemyStage">
+                    <a href="https://placeholder.com/" id="enemyPic"><img
+                            src="assets/images/pokemon/250x250/chansey.png" alt="pokemon"></a>
+                    <h2 id="enemyHP">HP: 120</h2>
+                </div>
+                <div id="playerStage">
+                    <a href="https://placeholder.com/" id="playerPic"><img
+                            src="assets/images/pokemon/250x250/Blastoise.png" alt="pokemon"></a>
+                    <h2 id="playerHP">HP: 100</h2>
+                </div>
+
             </div>
-            <div id="playerStage">
-                    <a href="https://placeholder.com/"><img src="https://via.placeholder.com/200" alt="pokemon"></a>
-                    <h2>Player HP</h2>
+            <div id="combatLog">
+                <h4 id="battleText">battle text</h4>
             </div>
-        </div>
-        <div id="btnsContainer">
-            <button>Button 1</button>
-            <button>Button 2</button>
-            <button>Button 3</button>
-            <button>Button 3</button>
+
+            <!-- attack buttons -->
+            <div id="btnsContainer">
+                <button id="atkbtn1">Attack 1</button>
+                <button id="atkbtn2">Attack 2</button>
+                <button id="atkbtn3">Attack 3</button>
+                <button id="atkbtn4">Attack 4</button>
+            </div>
         </div>
     </div>
 
 
-
+    <!-- footer -->
     <footer id="footer">
-        <h4>footer</h4>
+        <h4 id="legal">footer</h4>
     </footer>
 
 

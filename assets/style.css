@@ -1,5 +1,5 @@
 body{
-    background: #839073;
+    background: url("images/background/background.png");
     text-align: center;
     margin: 0 !important;
     padding: 0px;
@@ -11,96 +11,162 @@ body{
     top: 0;     
     width: 100%;
     height: 60px;    
-    background-color: #6e6362;
-    border-bottom: 2px solid #4e4a59;       
+    background-color: #ffcb05;
+    border-bottom: 2px solid #316ab2;       
 }
 
-#container{
-    background: #6e6362;
-    border: 2px solid #4e4a59;
+#sideBar{
+    position: relative;
+    top: 80px;
+    left: 190px;
+    z-index: -1;
+    background: #ffffff;
+    height: 350px;
+    width: 250px;
+    border: 2px solid #316ab2;
+    float: left;
+}
+
+#sideBar #tooltipPic{
+    position: relative;
+    top: 10px;   
+    width: 100%;
+    height: 60%;   
+}
+
+
+#sideBar #tooltipPokedex{
+    position: relative;
+    top: 2px;
+    background: #f3eeea;
+    width: 100%;
+    height: 35%;
+}
+
+
+#containerMain{
+    position: relative;
+    top: 80px;
+    z-index: -1;
     width: 960px;
-    height: 575px;
-    margin: 75px auto;
-    
+    height: 800px;
+    margin: auto;
 }
 
 #starterPokemon{
-    background: #4e4a59;
+    position: relative;
+    right: 20px;
     width: 30%; 
-    height: 100%;
-    float: left;   
+    height: 100%;    
+    float: left; 
 }
 
 #pokemonBox{
     background: #ffffff;    
     width: 100%;
-    height: 33.3%;
+    height: 25%;
+    border: #316ab2 solid 2px;
 }
 
-#pokemonBox h2{
-    float: left;
+#pokemonBox #pokemonName{
+   position: relative;
+   bottom: 15px;
+
 }
 
-#pokemonBox a{
-    margin: 15px;
+#pokemonBox #pokemonRoster{
+    position: relative;
+    top: 5px;
+    margin: 10px;
+}
+
+#mainGame{
+    height: 100%;
+    width: 70%;
     float: left;
 }
 
 #battleArea{
-    background: #839073;
-    width: 70%; 
-    height: 80%;
-    float: left;   
+    background: url("../assets/images/arenaBackground/BattlegroundBackground.png");
+    width: 100%; 
+    height: 70%;
+    border: #316ab2 solid 2px;
+      
 }
 
 #enemyStage, #playerStage{
-    background: pink;
     width: 100%;
     height: 50%;
 }
 
-#playerStage{
-    background: red;
-}
-
-#playerStage a{
-    margin: 20px 40px;
+#playerStage #playerPic{
+    margin: 15px 40px;
     float: left;
 }
 
-#playerStage h2{
-    background: #ffffff;
+#playerStage #playerHP{
+    text-shadow: -2px 0 #ffffff, 0 2px #ffffff, 2px 0 #ffffff, 0 -2px #ffffff;
     float: left;
 }
-#enemyStage a{
-    margin: 20px 40px;
+
+#enemyStage #enemyPic{
+    margin: 15px 40px;
     float: right;
 }
 
-#enemyStage h2{
-    background: #ffffff;
-    
+#enemyStage #enemyHP{
+    text-shadow: -2px 0 #ffffff, 0 2px #ffffff, 2px 0 #ffffff, 0 -2px #ffffff;
     float: right;
 }
+
+#combatLog{
+    position: relative;
+    top: 10px;
+    background: #624f48;
+    border: #316ab2 solid 2px;
+    width: 100%;
+    height: 5%;
+}
+
+#combatLog #battleText{
+    position: relative;
+    left: 10px;
+    top: 10px;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+}
+
 
 #btnsContainer{
-    background: #7cae7a;
-    width: 70%; 
+    position: relative;
+    top: 20px;
+    background: #f3eeea;
+    border: #316ab2 solid 2px;
+    width: 100%; 
     height: 20%;
-    float: left;   
 }
 
-#btnsContainer button{
-    margin: 25px 20px;
-    padding: 20px 30px;
+#btnsContainer #atkbtn1, 
+#btnsContainer #atkbtn2, 
+#btnsContainer #atkbtn3, 
+#btnsContainer #atkbtn4{
+    position: relative;
+    top: 20px;
+    margin: 0px 8px;
+    padding: 15px 30px;
 }
-
-
 
 #footer{     
     position: fixed;
     bottom: 0;
+    height: 30px;
     width: 100%;
-    background: #6e6362;
-    border-top: 2px solid #4e4a59;    
+    background: #ffcb05;
+    border-top: 2px solid #316ab2;    
+}
+
+#footer #legal{     
+    margin: 0 !important;
+    font-size: 12px;   
 }
