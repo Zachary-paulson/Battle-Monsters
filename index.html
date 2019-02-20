@@ -13,40 +13,38 @@
 
 <body>
     <header id="header">
-        <h1>header</h1>
+        <h1>Pokemon Battle City</h1>
     </header>
 
     <!-- pokemon tooltip -->
     <div id="sideBar">
-        <a id="tooltipPic"><img src="assets/images/pokemon/200x200/Venusaur.png"
+        <a id="tooltipPic"><img src="#"
                 alt="pokemon"></a>
-        <p id="tooltipPokedex"> <strong>Venusaur #003</strong><br /> <br /> 
-            The plant blooms when it is absorbing solar energy. It stays on the move to seek sunlight.
-        </p>
+        <p id="tooltipPokedex"></p>
     </div>
 
     <div id="containerMain">
         <!-- character window -->
         <div id="starterPokemon">
-            <div class="pokemonBox" id="venusaur">
-                <a class="pokemonRoster"><img
+            <div class="pokemonBox">
+                <a class="pokemonRoster" id="venusaur"><img
                         src="assets/images/pokemon/150x150/Venusaur.png" alt="pokemon"></a>
                 <h2 class="pokemonName">Venusaur</h2>
             </div>
-            <div class="pokemonBox" id="blastoise">
-                <a  class="pokemonRoster"><img
+            <div class="pokemonBox" >
+                <a  class="pokemonRoster" id="blastoise"><img
                         src="assets/images/pokemon/150x150/Blastoise.png" alt="pokemon"></a>
                 <h2 class="pokemonName">Blastoise</h2>
             </div>
-            <div class="pokemonBox" id="charizard">
-                <a class="pokemonRoster"><img
+            <div class="pokemonBox" >
+                <a class="pokemonRoster" id="charizard"><img
                         src="assets/images/pokemon/150x150/Charizard.png" alt="pokemon"></a>
                 <h2 class="pokemonName">Charizard</h2>
             </div>
-            <div class="pokemonBox" id="chansey">
-                <a  class="pokemonRoster"><img
-                        src="assets/images/pokemon/150x150/chansey.png" alt="pokemon"></a>
-                <h2 class="pokemonName">chansey</h2>
+            <div class="pokemonBox" >
+                <a  class="pokemonRoster" id="chansey"><img
+                        src="assets/images/pokemon/150x150/Chansey.png" alt="pokemon"></a>
+                <h2 class="pokemonName">Chansey</h2>
             </div>
         </div>
 
@@ -55,7 +53,7 @@
             <div id="battleArea">
                 <div id="enemyStage">
                     <a id="enemyPic"><img
-                            src="assets/images/pokemon/250x250/chansey.png" alt="pokemon"></a>
+                            src="assets/images/pokemon/250x250/Chansey.png" alt="pokemon"></a>
                     <h2 id="enemyHP">HP: 120</h2>
                 </div>
                 <div id="playerStage">
@@ -66,7 +64,7 @@
 
             </div>
             <div id="combatLog">
-                <h4 id="battleText">battle text</h4>
+                <h4 id="battleText">Please select a pokemon.</h4>
             </div>
 
             <!-- attack buttons -->
@@ -74,8 +72,11 @@
                 <button id="atkbtn1">Attack 1</button>
                 <button id="atkbtn2">Attack 2</button>
                 <button id="atkbtn3">Attack 3</button>
-                <button id="atkbtn4">Attack 4</button>
+                <button id="atkbtn4">Attack 4</button>                
             </div>
+
+            <button id="playerSelect">Ready to Battle</button>
+            
         </div>
     </div>
 
