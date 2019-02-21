@@ -1,5 +1,6 @@
 $(document).ready(function () {
 
+    //pokemon with all stats
     let venusaur = {
         name: "Venusaur",
         level: 50,
@@ -138,8 +139,8 @@ $(document).ready(function () {
     let chansey = {
         name: "Chansey",
         level: 50,
-        hp: 250,
-        maxHP: 250,
+        hp: 100,
+        maxHP: 100,
         attack: 105,
         defense: 105,
         speed: 105,
@@ -172,7 +173,7 @@ $(document).ready(function () {
         thunderbolt: {
             name: "Thunderbolt",
             pwr: 90,
-            hitChance: 100,
+            hitChance: 70,
             stab: false,
             effect: "none",
             delay: "none"
@@ -180,16 +181,13 @@ $(document).ready(function () {
         pokedex: "A rare and elusive Pokémon that is said to bring happiness to those who manage to get it."
     }
 
+    //used through the code.
     let playSelectConfirm = false;
     let playerActivePokemon;
     let enemyActivePokemon;
     let battleStarted = false;
-    
 
-
-   
-
-    //Displays fun facts
+    //Displays fun facts when you hover over pokemon.
     $(".pokemonRoster").hover(function () {
 
         switch ($(this).attr('id')) {
@@ -225,6 +223,7 @@ $(document).ready(function () {
         }
     });
 
+    //attack buttons
     $("#btnsContainer button").click(function () {
         if (battleStarted) {
             alert(playerActivePokemon.name + " attacked");
@@ -245,9 +244,10 @@ $(document).ready(function () {
         }
         enemeyAttack(enemyActivePokemon);
         isMatchOver();
-        gameOver();            
+        gameOver();
     });
-    
+
+    //select player and enemy pokemons.
     $(".pokemonRoster").click(function (e) {
         //alert($(this).attr('id'));
         if (playSelectConfirm != true) {
@@ -262,90 +262,8 @@ $(document).ready(function () {
 
     });
 
-    //_________________________________Functions______________________________
+    /******ALL Functions used for the game*******/
     
-    function battlePhase(pk1, pk2, atk) {
-        let dmg = getDmg(pk1, pk2, atk);
-        $("#battleText").html(atk.name + " did " + dmg + " damage.");
-        pk2.maxHP -= dmg;
-        if (pk2.maxHP < 0) {
-            pk2.maxHP = 0;
-        }
-    }
-
-    //set players health field
-    function setPlayerHealth(pk) {
-        $("#playerHP").html("HP:  " + pk.maxHP);
-    }
-
-    //set enemy health field    
-    function setEnemyHealth(pk) {
-        $("#enemyHP").html("HP:  " + pk.maxHP);
-    }
-
-    function isMatchOver(){
-        if(enemyActivePokemon.maxHP === 0){
-            alert(playerActivePokemon.name + " wins");
-            battleStarted = false;
-            playerActivePokemon.maxHP = playerActivePokemon.hp;
-            setPlayerHealth(playerActivePokemon);
-        }
-        else if (playerActivePokemon.maxHP === 0){
-            alert(playerActivePokemon.name + " loses");
-            battleStarted = false;
-        }
-    }
-
-    function gameOver(){
-        if(venusaur.condition === "dead" && blastoise.condition === "dead" && charizard.condition === "dead" && chansey.condition === "dead" ){
-            alert("winner! You're the pokemon master!");
-        }
-    }
-
-    //enemy attack
-    function enemeyAttack(enemy) {
-        alert(enemy.name + " attacked");
-        if( enemy.maxHP > 0){
-            switch (enemy.name) {
-                case venusaur.name:
-                    battlePhase(venusaur, playerActivePokemon, enemy.razorLeaf);
-                    setPlayerHealth(playerActivePokemon);
-                    break;
-                case blastoise.name:
-                    battlePhase(blastoise, playerActivePokemon, enemy.surf);
-                    setPlayerHealth(playerActivePokemon);
-                    break;
-                case charizard.name:
-                    battlePhase(charizard, playerActivePokemon, enemy.fireBlast);
-                    setPlayerHealth(playerActivePokemon);
-                    break;
-                case chansey.name:
-                    battlePhase(chansey, playerActivePokemon, enemy.iceBeam);
-                    setPlayerHealth(playerActivePokemon);
-                    break;
-            }
-        }
-        else{
-            alert (enemy.name + " blacked out.");
-            enemy.condition = "dead";
-        }
-        
-    }
-
-    //Calculate damage dealt.
-    function getDmg(pk1, pk2, atk) {
-        let dmg;
-        let hit = isHit(atk.hitChance);
-        alert(pk1.name + " hit: " + hit);
-        if (hit) {
-            dmg = damage(pk1.level, pk1.attack, pk2.defense, atk.pwr, atk.stab, pk1, pk2);
-        }
-        else {
-            dmg = 0;
-        }
-        return dmg;
-    }
-
     //player selection
     function selectPlayerPokemon(pkm) {
         switch (pkm) {
@@ -428,14 +346,108 @@ $(document).ready(function () {
         }
 
     }
+   
+    /******battle Phase functions*******/
+    //enemy AI attack
+    function enemeyAttack(enemy) {
+        alert(enemy.name + " attacked");
+        if (enemy.maxHP > 0) {
+            switch (enemy.name) {
+                case venusaur.name:
+                    battlePhase(venusaur, playerActivePokemon, enemy.razorLeaf);
+                    setPlayerHealth(playerActivePokemon);
+                    break;
+                case blastoise.name:
+                    battlePhase(blastoise, playerActivePokemon, enemy.surf);
+                    setPlayerHealth(playerActivePokemon);
+                    break;
+                case charizard.name:
+                    battlePhase(charizard, playerActivePokemon, enemy.fireBlast);
+                    setPlayerHealth(playerActivePokemon);
+                    break;
+                case chansey.name:
+                    battlePhase(chansey, playerActivePokemon, enemy.iceBeam);
+                    setPlayerHealth(playerActivePokemon);
+                    break;
+            }
+        }
+        else {
+            alert(enemy.name + " blacked out.");
+            enemy.condition = "dead";
+        }
 
-    //damage formula.
-    function damage(lvl, atk, def, pwr, stab, pkm1, pkm2) {
-        // Need to code RandomSource, stab, tpye, and crit.
-        let modifer = getCrit() * getRndmDmgMod() * getSTAB(stab) * type(pkm1, pkm2);
-        return Math.round(((((((2 * lvl) / 5) + 2) * pwr * (atk / def)) / 50) + 2) * modifer)
     }
 
+    //Battle phase runs damage functions for both emenies and players.
+    function battlePhase(pk1, pk2, atk) {
+        let dmg = getDmg(pk1, pk2, atk);
+        alert(atk.name + " did " + dmg + " damage.");
+        pk2.maxHP -= dmg;
+        if (pk2.maxHP < 0) {
+            pk2.maxHP = 0;
+        }
+    }
+
+    //Calculate damage dealt.
+    function getDmg(pk1, pk2, atk) {
+        let dmg;
+        let hit = isHit(atk.hitChance);
+        alert(pk1.name + " hit: " + hit);
+        if (hit) {
+            dmg = damage(pk1.level, pk1.attack, pk2.defense, atk.pwr, atk.stab, pk1, pk2);
+        }
+        else {
+            dmg = 0;
+        }
+        return dmg;
+    }
+
+    //set players health field
+    function setPlayerHealth(pk) {
+        $("#playerHP").html("HP:  " + pk.maxHP);
+    }
+
+    //set enemy health field    
+    function setEnemyHealth(pk) {
+        $("#enemyHP").html("HP:  " + pk.maxHP);
+    }
+    
+    /******Testing win conditions*******/
+    //test to see if the match is over.
+    function isMatchOver() {
+        if (enemyActivePokemon.maxHP === 0) {
+            alert(playerActivePokemon.name + " wins");
+            battleStarted = false;
+            playerActivePokemon.maxHP = playerActivePokemon.hp;
+            setPlayerHealth(playerActivePokemon);
+        }
+        else if (playerActivePokemon.maxHP === 0) {
+            alert(playerActivePokemon.name + " loses");
+            battleStarted = false;
+        }
+    }
+
+    //test to see if the game is over.
+    function gameOver() {
+        if (venusaur.condition === "dead" && blastoise.condition === "dead" && charizard.condition === "dead" && chansey.condition === "dead") {
+            alert("winner! You're the pokemon master!");
+        }
+        else if (playerActivePokemon.maxHP === 0) {
+            alert("Game over");
+        }
+    }
+    
+    /******Formulas for calculating attack damage*******/
+    //Checks if there was a hit..
+    function isHit(moveChance) {
+        let chance = Math.floor(Math.random() * (99 + 1) + 1);
+        if (moveChance >= chance) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
     //Will check in there was a crit.
     function getCrit() {
         let rndmNum = Math.floor((Math.random() * 255) + 1);
@@ -504,20 +516,17 @@ $(document).ready(function () {
         }//end entire if statment.
     }
 
-    //Checks if there was a hit..
-    function isHit(moveChance) {
-        let chance = Math.floor(Math.random() * (99 + 1) + 1);
-        if (moveChance >= chance) {
-            return true;
-        }
-        else {
-            return false;
-        }
+    //damage formula.
+    function damage(lvl, atk, def, pwr, stab, pkm1, pkm2) {
+        // Need to code RandomSource, stab, tpye, and crit.
+        let modifer = getCrit() * getRndmDmgMod() * getSTAB(stab) * type(pkm1, pkm2);
+        return Math.round(((((((2 * lvl) / 5) + 2) * pwr * (atk / def)) / 50) + 2) * modifer)
     }
 
-    //venusaur attack function. WIP.
+    /******Player attack functions.*******/
+    //venusaur attack function.
     function venusaurAttack(e) {
-        
+
         switch (parseInt(e.val())) {
             case 1:
                 battlePhase(venusaur, enemyActivePokemon, venusaur.razorLeaf);
@@ -538,7 +547,7 @@ $(document).ready(function () {
         }
     }
 
-    //blastoise attack function. WIP.
+    //blastoise attack function. 
     function blastoiseAttack(e) {
         switch (parseInt(e.val())) {
             case 1:
@@ -560,7 +569,7 @@ $(document).ready(function () {
         }
     }
 
-    //charizard attack function. WIP.
+    //charizard attack function. 
     function charizardAttack(e) {
         switch (parseInt(e.val())) {
             case 1:
@@ -582,7 +591,7 @@ $(document).ready(function () {
         }
     }
 
-    //chansey attack function. WIP.
+    //chansey attack function. 
     function chanseyAttack(e) {
         switch (parseInt(e.val())) {
             case 1:
