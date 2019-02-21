@@ -4,6 +4,7 @@ body{
     text-align: center;
     margin: 0 !important;
     padding: 0px;
+    padding-bottom: 150px;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
@@ -13,16 +14,21 @@ body{
     z-index: 1;     
     width: 100%;
     height: 60px;    
-    background-color: #ffcb05;
+    background-color: #ffcd05d0;
     border-bottom: 2px solid #316ab2;       
 }
 
+#header h1{
+    font-size: 52px;
+    color: #ffffff;
+    text-shadow: -2px 0 #316ab2, 0 2px #316ab2, 2px 0 #316ab2, 0 -2px #316ab2;
+}
+
 #sideBar{
-    position: relative;
+    position: fixed;
     top: 80px;
-    right: -150px;
     background: #ffffff;
-    height: 350px;
+    height: 300px;
     width: 250px;
     border: 2px solid #316ab2;
     float: left;
@@ -37,7 +43,7 @@ body{
 #sideBar #tooltipPokedex{
     background: #f3eeea;
     width: 100%;
-    height: 42%;
+    height: 32%;
 }
 
 #containerMain{
@@ -55,14 +61,19 @@ body{
     height: 100%;
     margin-bottom: 20px;    
     float: left; 
+        
 }
 
 .pokemonBox{
+    margin-bottom: 5px;
     background: #ffffff;    
     width: 100%;
     height: 25%;
     border: #316ab2 solid 2px;
+    
+
 }
+
 
 .pokemonBox .pokemonName{
    position: relative;
@@ -133,11 +144,12 @@ body{
 #combatLog #battleText{
     position: relative;
     left: 10px;
-    top: 10px;
+    top: 8px;
     color: #ffffff;
     margin: 0;
     padding: 0;
     text-align: left;
+    font-size: 24px;
 }
 
 #btnsContainer{
@@ -173,7 +185,7 @@ body{
     left: 0;
     bottom: 0;
     width: 100%;
-    background: #ffcb05;
+    background: #ffcd05d0;
     border-top: 2px solid #316ab2;
     text-align: center;
 }
