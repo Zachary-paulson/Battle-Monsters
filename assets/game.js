@@ -8,9 +8,10 @@ $(document).ready(function () {
         maxHP: 80,
         attack: 82,
         defense: 83,
-        speed: 80,
         type: "grass",
         conditionStatus: "Normal",
+        conditionLength: 0,
+        atkStage: 1,
         razorLeaf: {
             name: "Razor Leaf",
             pwr: 55,
@@ -53,9 +54,10 @@ $(document).ready(function () {
         maxHP: 79,
         attack: 83,
         defense: 100,
-        speed: 78,
         type: "water",
-        condition: "Normal",
+        condition: "normal",
+        conditionLength: 0,
+        atkStage: 1,
         surf: {
             name: "Surf",
             pwr: 90,
@@ -98,9 +100,10 @@ $(document).ready(function () {
         maxHP: 78,
         attack: 84,
         defense: 78,
-        speed: 100,
         type: "fire",
         condition: "normal",
+        conditionLength: 0,
+        atkStage: 1,
         fireBlast: {
             name: "Fire Blast",
             pwr: 110,
@@ -143,9 +146,10 @@ $(document).ready(function () {
         maxHP: 100,
         attack: 105,
         defense: 105,
-        speed: 105,
         type: "normal",
+        conditionLength: 0,
         condition: "normal",
+        atkStage: 1,
         iceBeam: {
             name: "Ice Beam",
             pwr: 90,
@@ -186,6 +190,8 @@ $(document).ready(function () {
     let playerActivePokemon;
     let enemyActivePokemon;
     let battleStarted = false;
+
+
 
     //Displays fun facts when you hover over pokemon.
     $(".pokemonRoster").hover(function () {
@@ -263,7 +269,7 @@ $(document).ready(function () {
     });
 
     /******ALL Functions used for the game*******/
-    
+
     //player selection
     function selectPlayerPokemon(pkm) {
         switch (pkm) {
@@ -346,12 +352,14 @@ $(document).ready(function () {
         }
 
     }
-   
+
     /******battle Phase functions*******/
     //enemy AI attack
     function enemeyAttack(enemy) {
-        alert(enemy.name + " attacked");
-        if (enemy.maxHP > 0) {
+        let canAttak = checkCondition(enemy.condition);
+        alert(enemy.name + " " + canAttak);
+        
+        if (enemy.maxHP > 0 && checkCondition(enemy.condition) != false) {
             switch (enemy.name) {
                 case venusaur.name:
                     battlePhase(venusaur, playerActivePokemon, enemy.razorLeaf);
@@ -371,7 +379,7 @@ $(document).ready(function () {
                     break;
             }
         }
-        else {
+        else if(enemy.maxHP === 0){
             alert(enemy.name + " blacked out.");
             enemy.condition = "dead";
         }
@@ -411,7 +419,7 @@ $(document).ready(function () {
     function setEnemyHealth(pk) {
         $("#enemyHP").html("HP:  " + pk.maxHP);
     }
-    
+
     /******Testing win conditions*******/
     //test to see if the match is over.
     function isMatchOver() {
@@ -436,7 +444,35 @@ $(document).ready(function () {
             alert("Game over");
         }
     }
-    
+
+    //wip
+    function checkCondition(condition){
+        let canAtk;
+        if(condition === "asleep" ){
+            if(enemyActivePokemon.conditionLength > 0){
+                enemyActivePokemon.conditionLength--;
+                canAtk = false;
+            }
+            else if (enemyActivePokemon.conditionLength === 0){
+                enemyActivePokemon.condition = "normal";
+                canAtk = true;
+            }
+
+        }
+        else if(condition === "paralyzed"){
+            if(Math.floor(Math.random() * (99 + 1) + 1) < 25){
+                canAtk = false;
+            }
+            else{
+                canAtk = true;
+                
+            }
+        }
+        
+        return canAtk;     
+        
+    }
+
     /******Formulas for calculating attack damage*******/
     //Checks if there was a hit..
     function isHit(moveChance) {
@@ -519,7 +555,7 @@ $(document).ready(function () {
     //damage formula.
     function damage(lvl, atk, def, pwr, stab, pkm1, pkm2) {
         // Need to code RandomSource, stab, tpye, and crit.
-        let modifer = getCrit() * getRndmDmgMod() * getSTAB(stab) * type(pkm1, pkm2);
+        let modifer = getCrit() * getRndmDmgMod() * getSTAB(stab) * type(pkm1, pkm2) * pkm1.atkStage;
         return Math.round(((((((2 * lvl) / 5) + 2) * pwr * (atk / def)) / 50) + 2) * modifer)
     }
 
@@ -533,11 +569,11 @@ $(document).ready(function () {
                 setEnemyHealth(enemyActivePokemon);
                 break;
             case 2:
-                battlePhase(venusaur, enemyActivePokemon, venusaur.sleepPowder);
+                sleepPowderAttack(venusaur);
                 setEnemyHealth(enemyActivePokemon);
                 break;
             case 3:
-                battlePhase(venusaur, enemyActivePokemon, venusaur.SwordsDance);
+                swordsDanceAttack(venusaur);
                 setEnemyHealth(enemyActivePokemon);
                 break;
             case 4:
@@ -577,7 +613,7 @@ $(document).ready(function () {
                 setEnemyHealth(enemyActivePokemon);
                 break;
             case 2:
-                battlePhase(charizard, enemyActivePokemon, charizard.earthQuake);
+                swordsDanceAttack(enemyActivePokemon);
                 setEnemyHealth(enemyActivePokemon);
                 break;
             case 3:
@@ -599,11 +635,11 @@ $(document).ready(function () {
                 setEnemyHealth(enemyActivePokemon);
                 break;
             case 2:
-                battlePhase(chansey, enemyActivePokemon, chansey.softBoiled);
-                setEnemyHealth(enemyActivePokemon);
+                softBoiledAttack(chansey)
+                setPlayerHealth(enemyActivePokemon);
                 break;
             case 3:
-                battlePhase(chansey, enemyActivePokemon, chansey.thunderWave);
+                thunderWaveAttack(enemyActivePokemon)
                 setEnemyHealth(enemyActivePokemon);
                 break;
             case 4:
@@ -612,5 +648,57 @@ $(document).ready(function () {
                 break;
         }
     }
+
+    /*************Special attack functions*******************/
+
+    function sleepPowderAttack(pkm) {
+
+        if (isHit(pkm.sleepPowder.hitChance)) {
+            if (pkm.conditionStatus != "asleep") {
+                pkm.conditionLength = Math.floor(Math.random() * (7) + 1);
+                alert(enemyActivePokemon.name + " is now asleep for " + pkm.conditionLength + " turns");
+            }
+            else {
+                alert(pkm.name + " failed to sleep the other pokemon.");
+            }
+        }
+        else{
+            alert("Sleep Powder failed missed");
+        }
+
+
+    }
+
+    function swordsDanceAttack(pkm) {
+        if (pkm.atkStage != 3) {
+            pkm.atkStage += 0.5;
+        }
+        else {
+            alert("Swords Dance failed!")
+        }
+    }
+
+    function softBoiledAttack(pkm) {
+        if (pkm.maxHP < (pkm.hp / 2)) {
+            pkm.maxHP += (pkm.hp / 2)
+        }
+        else {
+            alert("Soft Boiled failed!")
+        }
+    }
+
+    function thunderWaveAttack(pkm) {
+        if (isHit(pkm.thunderWave.hitChance)) {
+            if (pkm.condition != "paralyzed") {
+                pkm.condition = "paralyzed";
+            }
+            else {
+                alert("Thunder Wave failed failed!")
+            }
+        }
+    }
+
+
+
 
 });
