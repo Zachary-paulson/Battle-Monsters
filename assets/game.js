@@ -356,10 +356,8 @@ $(document).ready(function () {
     /******battle Phase functions*******/
     //enemy AI attack
     function enemeyAttack(enemy) {
-        let canAttak = checkCondition(enemy.condition);
-        alert(enemy.name + " " + canAttak);
-        
-        if (enemy.maxHP > 0 && checkCondition(enemy.condition) != false) {
+
+        if (enemy.maxHP > 0 && checkCondition()) {
             switch (enemy.name) {
                 case venusaur.name:
                     battlePhase(venusaur, playerActivePokemon, enemy.razorLeaf);
@@ -379,7 +377,7 @@ $(document).ready(function () {
                     break;
             }
         }
-        else if(enemy.maxHP === 0){
+        else if (enemy.maxHP === 0) {
             alert(enemy.name + " blacked out.");
             enemy.condition = "dead";
         }
@@ -445,32 +443,42 @@ $(document).ready(function () {
         }
     }
 
-    //wip
-    function checkCondition(condition){
-        let canAtk;
-        if(condition === "asleep" ){
-            if(enemyActivePokemon.conditionLength > 0){
-                enemyActivePokemon.conditionLength--;
-                canAtk = false;
-            }
-            else if (enemyActivePokemon.conditionLength === 0){
-                enemyActivePokemon.condition = "normal";
-                canAtk = true;
-            }
 
+    //wip
+    function checkCondition() {
+        let coniditon;
+        switch (enemyActivePokemon.condition) {
+            case "asleep":
+                coniditon = checkSleeping();
+                break;
+            case "paralyzed":
+                coniditon = fullyParalyzed();
+                break;
+            default:
+                coniditon = true;
+                break;
         }
-        else if(condition === "paralyzed"){
-            if(Math.floor(Math.random() * (99 + 1) + 1) < 25){
-                canAtk = false;
-            }
-            else{
-                canAtk = true;
-                
-            }
+        return coniditon
+    }
+
+    function checkSleeping() {
+        if (enemyActivePokemon.conditionLength > 0) {
+            enemyActivePokemon.conditionLength--;
+            return false;
         }
-        
-        return canAtk;     
-        
+        else if (enemyActivePokemon.conditionLength === 0) {
+            enemyActivePokemon.condition = "normal";
+            return true;
+        }
+    }
+
+    function fullyParalyzed() {
+        if (Math.floor(Math.random() * (99 + 1) + 1) < 25) {
+            return false;
+        }
+        else {
+            return true;
+        }
     }
 
     /******Formulas for calculating attack damage*******/
@@ -569,8 +577,8 @@ $(document).ready(function () {
                 setEnemyHealth(enemyActivePokemon);
                 break;
             case 2:
-                sleepPowderAttack(venusaur);
-                setEnemyHealth(enemyActivePokemon);
+                sleepPowderAttack(venusaur, enemyActivePokemon);
+                //setEnemyHealth(enemyActivePokemon);
                 break;
             case 3:
                 swordsDanceAttack(venusaur);
@@ -635,11 +643,11 @@ $(document).ready(function () {
                 setEnemyHealth(enemyActivePokemon);
                 break;
             case 2:
-                softBoiledAttack(chansey)
+                softBoiledAttack(chansey);
                 setPlayerHealth(enemyActivePokemon);
                 break;
             case 3:
-                thunderWaveAttack(enemyActivePokemon)
+                thunderWaveAttack(chansey);
                 setEnemyHealth(enemyActivePokemon);
                 break;
             case 4:
@@ -651,21 +659,21 @@ $(document).ready(function () {
 
     /*************Special attack functions*******************/
 
-    function sleepPowderAttack(pkm) {
+    function sleepPowderAttack(pkm, enemyPK) {
 
         if (isHit(pkm.sleepPowder.hitChance)) {
-            if (pkm.conditionStatus != "asleep") {
-                pkm.conditionLength = Math.floor(Math.random() * (7) + 1);
-                alert(enemyActivePokemon.name + " is now asleep for " + pkm.conditionLength + " turns");
+            if (enemyPK.condition != "asleep") {
+                enemyPK.condition = "asleep";
+                enemyPK.conditionLength = Math.floor(Math.random() * (7) + 1);
+                alert(enemyPK.name + " is now asleep for " + enemyPK.conditionLength + " turns");
             }
             else {
-                alert(pkm.name + " failed to sleep the other pokemon.");
+                alert(enemyPK.name + " failed to sleep the other pokemon.");
             }
         }
-        else{
+        else {
             alert("Sleep Powder failed missed");
         }
-
 
     }
 
@@ -689,16 +697,13 @@ $(document).ready(function () {
 
     function thunderWaveAttack(pkm) {
         if (isHit(pkm.thunderWave.hitChance)) {
-            if (pkm.condition != "paralyzed") {
-                pkm.condition = "paralyzed";
+            if (enemyActivePokemon.condition != "paralyzed") {
+                enemyActivePokemon.condition = "paralyzed";
             }
             else {
                 alert("Thunder Wave failed failed!")
             }
         }
     }
-
-
-
 
 });
