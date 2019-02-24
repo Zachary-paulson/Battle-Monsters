@@ -142,8 +142,8 @@ $(document).ready(function () {
     let chansey = {
         name: "Chansey",
         level: 50,
-        hp: 100,
-        maxHP: 100,
+        hp: 250,
+        maxHP: 250,
         attack: 105,
         defense: 105,
         type: "normal",
@@ -187,7 +187,7 @@ $(document).ready(function () {
 
     //used through the code.
     let playSelectConfirm = false;
-    let playerActivePokemon;
+    let playerActivePokemon = null;
     let enemyActivePokemon;
     let battleStarted = false;
 
@@ -218,9 +218,14 @@ $(document).ready(function () {
 
     //Confirms player is ready for battle
     $("#playerSelect").click(function () {
-        if (confirm("Are you sure?")) {
+        if (playerActivePokemon === null) {
+            $("#combatTxt").append("<br />You must choose a pokemon!");
+        }
+        else if (confirm("Are you sure?")) {
             playSelectConfirm = true;
-            $("#battleText").text("Please select an enemy to battle");
+            $("#combatTxt").html("<br />Please select an enemy to battle");
+            changeDefeatedPokemonImg(playerActivePokemon);
+            playerActivePokemon.condition = "dead";
             $(this).hide();
         }
         else {
@@ -232,7 +237,7 @@ $(document).ready(function () {
     //attack buttons
     $("#btnsContainer button").click(function () {
         if (battleStarted) {
-            alert(playerActivePokemon.name + " attacked");
+            $("#combatTxt").append("<br />" + playerActivePokemon.name + " attacked.");
             switch (playerActivePokemon.name) {
                 case venusaur.name:
                     venusaurAttack($(this));
@@ -255,7 +260,6 @@ $(document).ready(function () {
 
     //select player and enemy pokemons.
     $(".pokemonRoster").click(function (e) {
-        //alert($(this).attr('id'));
         if (playSelectConfirm != true) {
             selectPlayerPokemon($(this).attr('id'));
         }
@@ -315,40 +319,35 @@ $(document).ready(function () {
     //Enemy selection
     function selectEnemyPokemon(pkm) {
         if (playSelectConfirm) {
-            switch (pkm) {
-                case venusaur.name.toLowerCase():
-                    $("#enemyHP").html("HP:  " + venusaur.hp);
-                    $("#enemyPic img").attr("src", "assets/images/pokemon/250x250/Venusaur.png");
-                    enemyActivePokemon = venusaur;
-                    $("#battleText").html("Let the battle begin!");
-                    battleStarted = true;
-                    // startBattle(); 
-                    break;
-                case blastoise.name.toLowerCase():
-                    $("#enemyHP").html("HP:  " + blastoise.hp);
-                    $("#enemyPic img").attr("src", "assets/images/pokemon/250x250/Blastoise.png");
-                    enemyActivePokemon = blastoise;
-                    $("#battleText").html("Let the battle begin!");
-                    battleStarted = true;
-                    // startBattle();                    
-                    break;
-                case charizard.name.toLowerCase():
-                    $("#enemyHP").html("HP:  " + charizard.hp);
-                    $("#enemyPic img").attr("src", "assets/images/pokemon/250x250/Charizard.png");
-                    enemyActivePokemon = charizard;
-                    $("#battleText").html("Let the battle begin!");
-                    battleStarted = true;
-                    // startBattle();
-                    break;
-                case chansey.name.toLowerCase():
-                    $("#enemyHP").html("HP:  " + chansey.hp);
-                    $("#enemyPic img").attr("src", "assets/images/pokemon/250x250/Chansey.png");
-                    enemyActivePokemon = chansey;
-                    $("#battleText").html("Let the battle begin!");
-                    battleStarted = true;
-                    // startBattle(); 
-                    break;
+            if (pkm === venusaur.name.toLowerCase() && venusaur.condition != "dead") {
+                $("#enemyHP").html("HP:  " + venusaur.hp);
+                $("#enemyPic img").attr("src", "assets/images/pokemon/250x250/Venusaur.png");
+                enemyActivePokemon = venusaur;
+                $("#combatTxt").html("<br />Let the battle begin! <br /> A wild " + enemyActivePokemon.name + " appeared!");
+                battleStarted = true;
             }
+            else if (pkm === blastoise.name.toLowerCase() && blastoise.condition != "dead") {
+                $("#enemyHP").html("HP:  " + blastoise.hp);
+                $("#enemyPic img").attr("src", "assets/images/pokemon/250x250/Blastoise.png");
+                enemyActivePokemon = blastoise;
+                $("#combatTxt").html("<br />Let the battle begin! <br /> A wild " + enemyActivePokemon.name + " appeared!");
+                battleStarted = true;
+            }
+            else if (pkm === charizard.name.toLowerCase() && charizard.condition != "dead") {
+                $("#enemyHP").html("HP:  " + charizard.hp);
+                $("#enemyPic img").attr("src", "assets/images/pokemon/250x250/Charizard.png");
+                enemyActivePokemon = charizard;
+                $("#combatTxt").html("<br />Let the battle begin! <br /> A wild " + enemyActivePokemon.name + " appeared!");
+                battleStarted = true;
+            }
+            else if (pkm === chansey.name.toLowerCase() && chansey.condition != "dead") {
+                $("#enemyHP").html("HP:  " + chansey.hp);
+                $("#enemyPic img").attr("src", "assets/images/pokemon/250x250/Chansey.png");
+                enemyActivePokemon = chansey;
+                $("#combatTxt").html("<br />Let the battle begin! <br /> A wild " + enemyActivePokemon.name + " appeared!");
+                battleStarted = true;
+            }
+
         }
 
     }
@@ -358,6 +357,7 @@ $(document).ready(function () {
     function enemeyAttack(enemy) {
 
         if (enemy.maxHP > 0 && checkCondition()) {
+            $("#combatTxt").append("<br />" + enemy.name + " attacked.");
             switch (enemy.name) {
                 case venusaur.name:
                     battlePhase(venusaur, playerActivePokemon, enemy.razorLeaf);
@@ -378,8 +378,10 @@ $(document).ready(function () {
             }
         }
         else if (enemy.maxHP === 0) {
-            alert(enemy.name + " blacked out.");
+            $("#combatTxt").append("<br />" + enemy.name + " blacked out.");
+            $("#enemyPic img").attr("src", "assets/images/placeholder/pokeball250.png");
             enemy.condition = "dead";
+            changeDefeatedPokemonImg(enemy);
         }
 
     }
@@ -387,7 +389,7 @@ $(document).ready(function () {
     //Battle phase runs damage functions for both emenies and players.
     function battlePhase(pk1, pk2, atk) {
         let dmg = getDmg(pk1, pk2, atk);
-        alert(atk.name + " did " + dmg + " damage.");
+        $("#combatTxt").append("<br />" + atk.name + " did " + dmg + " damage.");
         pk2.maxHP -= dmg;
         if (pk2.maxHP < 0) {
             pk2.maxHP = 0;
@@ -398,11 +400,12 @@ $(document).ready(function () {
     function getDmg(pk1, pk2, atk) {
         let dmg;
         let hit = isHit(atk.hitChance);
-        alert(pk1.name + " hit: " + hit);
+
         if (hit) {
             dmg = damage(pk1.level, pk1.attack, pk2.defense, atk.pwr, atk.stab, pk1, pk2);
         }
         else {
+            $("#combatTxt").append("<br />" + pk1.name + " Attack missed!");
             dmg = 0;
         }
         return dmg;
@@ -418,17 +421,36 @@ $(document).ready(function () {
         $("#enemyHP").html("HP:  " + pk.maxHP);
     }
 
+    function changeDefeatedPokemonImg(pkm) {
+        switch (pkm.name.toLowerCase()) {
+            case "venusaur":
+                $("#venusaur img").attr("src", "assets/images/defeatedPokemon/venusaur.png");
+                break;
+            case "blastoise":
+                $("#blastoise img").attr("src", "assets/images/defeatedPokemon/blastoise.png");
+                break;
+            case "charizard":
+                $("#charizard img").attr("src", "assets/images/defeatedPokemon/Charizard.png");
+                break;
+            case "chansey":
+                $("#chansey img").attr("src", "assets/images/defeatedPokemon/Chansey.png");
+                break;
+            default:
+                break;
+        }
+    }
+
     /******Testing win conditions*******/
     //test to see if the match is over.
     function isMatchOver() {
         if (enemyActivePokemon.maxHP === 0) {
-            alert(playerActivePokemon.name + " wins");
+            $("#combatTxt").append("<br />" + playerActivePokemon.name + " wins");
             battleStarted = false;
-            playerActivePokemon.maxHP = playerActivePokemon.hp;
+            resetActivePokemon();
             setPlayerHealth(playerActivePokemon);
         }
         else if (playerActivePokemon.maxHP === 0) {
-            alert(playerActivePokemon.name + " loses");
+            $("#combatTxt").append("<br />" + playerActivePokemon.name + " loses");
             battleStarted = false;
         }
     }
@@ -436,15 +458,20 @@ $(document).ready(function () {
     //test to see if the game is over.
     function gameOver() {
         if (venusaur.condition === "dead" && blastoise.condition === "dead" && charizard.condition === "dead" && chansey.condition === "dead") {
-            alert("winner! You're the pokemon master!");
+            $("#combatTxt").html("<br />" + "winner! You're the pokemon master!");
         }
         else if (playerActivePokemon.maxHP === 0) {
-            alert("Game over");
+            $("#combatTxt").append("<br />" + "Game over");
         }
     }
 
+    function resetActivePokemon() {
+        playerActivePokemon.maxHP = playerActivePokemon.hp;
+        playerActivePokemon.atkStage = 1;
+    }
 
-    //wip
+
+    //Will see if the pokemon can attack.
     function checkCondition() {
         let coniditon;
         switch (enemyActivePokemon.condition) {
@@ -461,19 +488,24 @@ $(document).ready(function () {
         return coniditon
     }
 
+    //Check the sleeping condition
     function checkSleeping() {
         if (enemyActivePokemon.conditionLength > 0) {
             enemyActivePokemon.conditionLength--;
+            $("#combatTxt").append("<br />" + enemyActivePokemon.name + " is asleep.");
             return false;
         }
         else if (enemyActivePokemon.conditionLength === 0) {
             enemyActivePokemon.condition = "normal";
+            $("#combatTxt").append("<br />" + enemyActivePokemon.name + " Woke up.");
             return true;
         }
     }
 
+    //Check if pokemon is paralyzed.
     function fullyParalyzed() {
         if (Math.floor(Math.random() * (99 + 1) + 1) < 25) {
+            $("#combatTxt").append("<br />" + enemyActivePokemon.name + " is fully Paralyzed!");
             return false;
         }
         else {
@@ -497,7 +529,7 @@ $(document).ready(function () {
         let rndmNum = Math.floor((Math.random() * 255) + 1);
         switch (rndmNum) {
             case 1:
-                alert("It was super effective!");
+                $("#combatTxt").append("<br />It was a Crit!");
                 return 1.5;
             default:
                 return 1;
@@ -524,9 +556,11 @@ $(document).ready(function () {
     function type(pkm1, pkm2) {
         if (pkm1 === "water") {
             if (pkm2 === "fire") {
+                $("#combatTxt").append("<br />It was super Effective.");
                 return 2;
             }
             else if (pkm2 === "grass") {
+                $("#combatTxt").append("<br />It was not very Effective.");
                 return 0.5;
             }
             else {
@@ -535,9 +569,11 @@ $(document).ready(function () {
         }//end if
         else if (pkm1 === "grass") {
             if (pkm2 === "water") {
+                $("#combatTxt").append("<br />It was super Effective.");
                 return 2;
             }
             else if (pkm2 === "fire") {
+                $("#combatTxt").append("<br />It was not very Effective.");
                 return 0.5;
             }
             else {
@@ -546,9 +582,11 @@ $(document).ready(function () {
         }//end  else if
         else if (pkm1 === "fire") {
             if (pkm2 === "grass") {
+                $("#combatTxt").append("<br />It was super Effective.");
                 return 2;
             }
             else if (pkm2 === "water") {
+                $("#combatTxt").append("<br />It was not very Effective.");
                 return 0.5;
             }
             else {
@@ -563,7 +601,7 @@ $(document).ready(function () {
     //damage formula.
     function damage(lvl, atk, def, pwr, stab, pkm1, pkm2) {
         // Need to code RandomSource, stab, tpye, and crit.
-        let modifer = getCrit() * getRndmDmgMod() * getSTAB(stab) * type(pkm1, pkm2) * pkm1.atkStage;
+        let modifer = getCrit() * getRndmDmgMod() * getSTAB(stab) * type(pkm1.type, pkm2.type) * pkm1.atkStage;
         return Math.round(((((((2 * lvl) / 5) + 2) * pwr * (atk / def)) / 50) + 2) * modifer)
     }
 
@@ -665,14 +703,14 @@ $(document).ready(function () {
             if (enemyPK.condition != "asleep") {
                 enemyPK.condition = "asleep";
                 enemyPK.conditionLength = Math.floor(Math.random() * (7) + 1);
-                alert(enemyPK.name + " is now asleep for " + enemyPK.conditionLength + " turns");
+                $("#combatTxt").append("<br />" + enemyPK.name + " is now asleep");
             }
             else {
-                alert(enemyPK.name + " failed to sleep the other pokemon.");
+                $("#combatTxt").append("<br />" + pkm.name + " failed to sleep the other pokemon.");
             }
         }
         else {
-            alert("Sleep Powder failed missed");
+            $("#combatTxt").append("<br />Sleep Powder failed missed");
         }
 
     }
@@ -680,18 +718,20 @@ $(document).ready(function () {
     function swordsDanceAttack(pkm) {
         if (pkm.atkStage != 3) {
             pkm.atkStage += 0.5;
+            $("#combatTxt").append("<br />" + pkm.name + "used Swords Dance.  Attack raise 1 stage.");
         }
         else {
-            alert("Swords Dance failed!")
+            $("#combatTxt").append("<br /> Swords Dance failed!");
         }
     }
 
     function softBoiledAttack(pkm) {
         if (pkm.maxHP < (pkm.hp / 2)) {
-            pkm.maxHP += (pkm.hp / 2)
+            pkm.maxHP += (pkm.hp / 2);
+            $("#combatTxt").append("<br />" + pkm.name + " gained " + (pkm.hp / 2) + " health!");
         }
         else {
-            alert("Soft Boiled failed!")
+            $("#combatTxt").append("<br />Soft Boiled failed!");
         }
     }
 
@@ -699,9 +739,10 @@ $(document).ready(function () {
         if (isHit(pkm.thunderWave.hitChance)) {
             if (enemyActivePokemon.condition != "paralyzed") {
                 enemyActivePokemon.condition = "paralyzed";
+                $("#combatTxt").append("<br />" + enemyActivePokemon.name + " is paralyzed!");
             }
             else {
-                alert("Thunder Wave failed failed!")
+                $("#combatTxt").append("<br /> Thunder Wave failed failed!");
             }
         }
     }
